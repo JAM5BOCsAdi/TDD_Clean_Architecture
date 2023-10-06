@@ -4,6 +4,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:tdd_clean_architecture/src/authentication/domain/repositories/authentication_repository.dart';
 import 'package:tdd_clean_architecture/src/authentication/domain/usecases/create_user.dart';
 
+import 'authentication_repository.mock.dart';
+
 /// 1. What does the class depend on? Example: ClassName(); <- Constructor depends on the inside content
 /// Here:
 /// CreateUser class depends on AuthenticationRepository, because it has "something" inside the Constructor
@@ -17,7 +19,9 @@ import 'package:tdd_clean_architecture/src/authentication/domain/usecases/create
 /// Using the Mocktail's APIs
 
 /// This class [MockAuthenticationRepository] is going to be a [Mock] version of [AuthenticationRepository]
-class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
+/// We did another file for this, if you need to use this line multiple times.
+/// File called: [authentication_repository.mock.dart]
+// class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
 
 void main() {
   late CreateUser useCase;
