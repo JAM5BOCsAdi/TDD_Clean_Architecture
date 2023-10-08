@@ -38,7 +38,7 @@ void main() {
   test(
     'It Should call the [Repository.createUser] method',
     () async {
-      // Arrange: Put everything together we need fo our function to work
+      // Arrange: Put everything together we need for our function to work
       // STUB
       when(
         () => repository.createUser(
