@@ -106,6 +106,20 @@ void main() {
           verifyNoMoreInteractions(client);
         },
       );
+
+      test(
+        'It should throw [ApiException] when the status code is not 200',
+        () async {
+          when(() => client.get(any())).thenAnswer((_) async => http.Response('Server Down', 500));
+
+          final methodCall = remoteDataSource.getUsers;
+
+          expect(() => methodCall(), throwsA(const ApiException(message: 'Server Down', statusCode: 500)));
+
+          verify(() => client.get(Uri.https(kBaseUrl, kGetUserEndPoint))).called(1);
+          verifyNoMoreInteractions(client);
+        },
+      );
     },
   );
 }
