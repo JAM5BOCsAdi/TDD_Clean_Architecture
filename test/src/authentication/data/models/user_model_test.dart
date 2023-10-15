@@ -53,4 +53,71 @@ void main() {
       );
     },
   );
+
+  group(
+    'fromJson',
+    () {
+      test(
+        'It should return a [UserModel] with the correct data',
+        () {
+          // Act:
+          final result = UserModel.fromJson(tJson);
+          expect(result, equals(tModel));
+        },
+      );
+    },
+  );
+
+  group(
+    'toMap',
+    () {
+      test(
+        'It should return a [Map] with the correct data',
+        () {
+          // Act:
+          final result = tModel.toMap();
+          // Assert:
+          expect(result, equals(tMap));
+        },
+      );
+    },
+  );
+
+  group(
+    'toJson',
+    () {
+      test(
+        'It should return a [JSON] with the correct data',
+        () {
+          // Act:
+          final result = tModel.toJson();
+
+          final tJson = jsonEncode(
+            {
+              "id": "1",
+              "createdAt": "_empty.createdAt",
+              "name": "_empty.name",
+              "avatar": "_empty.avatar",
+            },
+          );
+          // Assert:
+          expect(result, equals(tJson));
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith',
+    () {
+      test(
+        'It should return a [UserModel] with different data',
+        () {
+          // Act:
+          final result = tModel.copyWith(name: 'Paul');
+          expect(result.name, equals('Paul'));
+        },
+      );
+    },
+  );
 }
