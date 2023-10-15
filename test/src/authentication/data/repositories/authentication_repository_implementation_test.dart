@@ -5,6 +5,7 @@ import 'package:tdd_clean_architecture/core/errors/exceptions.dart';
 import 'package:tdd_clean_architecture/core/errors/failure.dart';
 import 'package:tdd_clean_architecture/src/authentication/data/data_sources/authentication_remote_data_source.dart';
 import 'package:tdd_clean_architecture/src/authentication/data/repositories/authentication_repository_implementation.dart';
+import 'package:tdd_clean_architecture/src/authentication/domain/entities/user.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthenticationRemoteDataSource {}
 
@@ -51,7 +52,7 @@ void main() {
       );
 
       test(
-        'It should return a [ServerFailure] when the call to the remote source is unsuccessful',
+        'It should return a [ApiFailure] when the call to the remote source is unsuccessful',
         () async {
           // Arrange:
           when(
@@ -82,6 +83,37 @@ void main() {
           );
 
           verify(() => remoteDataSource.createUser(createdAt: createdAt, name: name, avatar: avatar)).called(1);
+          verifyNoMoreInteractions(remoteDataSource);
+        },
+      );
+    },
+  );
+
+  group(
+    'getUsers',
+    () {
+      test(
+        'It should call the [RemoteDataSource.getUsers] and reutnr a [List<User>] when call to remote source is successful',
+        () async {
+          when(() => remoteDataSource.getUsers()).thenAnswer((_) async => []);
+
+          final result = await repoImpl.getUsers();
+
+          expect(result, isA<Right<dynamic, List<User>>>());
+
+          verify(() => remoteDataSource.getUsers()).called(1);
+          verifyNoMoreInteractions(remoteDataSource);
+        },
+      );
+      test(
+        'It should return a [ApiFailure] when the call to the remote source is unsuccessful',
+        () async {
+          when(() => remoteDataSource.getUsers()).thenThrow(tException);
+
+          final result = await repoImpl.getUsers();
+
+          expect(result, equals(ApiFailure.fromException(tException)));
+          verify(() => remoteDataSource.getUsers()).called(1);
           verifyNoMoreInteractions(remoteDataSource);
         },
       );
