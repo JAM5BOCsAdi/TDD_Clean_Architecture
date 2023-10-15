@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:tdd_clean_architecture/core/errors/exceptions.dart';
+import 'package:tdd_clean_architecture/core/errors/failure.dart';
 import 'package:tdd_clean_architecture/core/utils/typedef.dart';
 import 'package:tdd_clean_architecture/src/authentication/domain/entities/user.dart';
 
@@ -22,8 +24,12 @@ class AuthenticationRepositoryImplementation implements AuthenticationRepository
     // Make sure that it returns the proper data if there is an exception
     // // Check if when the remoteDataSource throws an exception, we return a
     // failure and if it does not throw an exception, we return the actual expected data
-    await _remoteDataSource.createUser(createdAt: createdAt, name: name, avatar: avatar);
-    return const Right(null);
+    try {
+      await _remoteDataSource.createUser(createdAt: createdAt, name: name, avatar: avatar);
+      return const Right(null);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 
   @override
