@@ -46,9 +46,20 @@ class _HomeScreenState extends State<HomeScreen> {
               : state is CreatingUser
                   ? const LoadingColumn(message: 'Creating users')
                   : state is UsersLoaded
-                      ? Center(
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {},
+                      ? Scrollbar(
+                          child: Center(
+                            child: ListView.builder(
+                              itemCount: state.users.length,
+                              itemBuilder: (context, index) {
+                                final user = state.users[index];
+                                print('User Avatar: ${user.avatar}');
+                                return ListTile(
+                                  leading: Image.network(user.avatar),
+                                  title: Text(user.name),
+                                  subtitle: Text(user.createdAt.substring(9)),
+                                );
+                              },
+                            ),
                           ),
                         )
                       : const SizedBox.shrink(),

@@ -46,6 +46,7 @@ void main() {
                 'name': 'name',
                 'avatar': 'avatar',
               }),
+              headers: {'Content-Type': 'application/json'},
             ),
           ).called(1);
 
@@ -80,6 +81,7 @@ void main() {
                 'name': 'name',
                 'avatar': 'avatar',
               }),
+              headers: {'Content-Type': 'application/json'},
             ),
           ).called(1);
 

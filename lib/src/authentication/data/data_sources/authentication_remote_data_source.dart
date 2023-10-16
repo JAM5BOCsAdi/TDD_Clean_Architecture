@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:tdd_clean_architecture/core/errors/exceptions.dart';
 import 'package:tdd_clean_architecture/core/utils/typedef.dart';
@@ -18,7 +19,7 @@ abstract class AuthenticationRemoteDataSource {
 }
 
 const kCreateUserEndPoint = '/test-api/users';
-const kGetUserEndPoint = '/test-api/user';
+const kGetUserEndPoint = '/test-api/users';
 
 class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
   final http.Client _client;
@@ -39,10 +40,11 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
       final response = await _client.post(
         Uri.https(kBaseUrl, kCreateUserEndPoint),
         body: jsonEncode({
-          'createdAt': 'createdAt',
-          'name': 'name',
-          'avatar': 'avatar',
+          'createdAt': createdAt,
+          'name': name,
+          // 'avatar': avatar,
         }),
+        headers: {'Content-Type': 'application/json'},
       );
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw ApiException(
@@ -61,6 +63,7 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
   Future<List<UserModel>> getUsers() async {
     try {
       final response = await _client.get(Uri.https(kBaseUrl, kGetUserEndPoint));
+      debugPrint(Uri.https(kBaseUrl, kGetUserEndPoint).toString());
       if (response.statusCode != 200) {
         throw ApiException(message: response.body, statusCode: response.statusCode);
       }
